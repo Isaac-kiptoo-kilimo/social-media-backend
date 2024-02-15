@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { createNewUserController, getAllUsersController, loginUserController } from '../controllers/usersControllers.js';
+import { createNewUserController, deleteUserController, getAllUsersController, getSingleUserController, loginUserController, updateUserControllers, updateUserPasswordControllers } from '../controllers/usersControllers.js';
 
 const userRouter=Router();
 
@@ -9,21 +9,13 @@ userRouter.post('/users/login', loginUserController)
 
 userRouter.get('/users', getAllUsersController)
 
-userRouter.get('/users/single/:id',(req,res)=>{
-    res.status(201).send("Getting Single user✔💕")
-})
+userRouter.get('/users/single/:UserID',getSingleUserController)
 
-userRouter.put('/users/update/:id',(req,res)=>{
-    res.status(201).send("User updated Successfully")
-})
+userRouter.put('/users/update/:UserID',updateUserControllers)
 
-userRouter.patch('/users/patch/:id',(req,res)=>{
-    res.status(201).send("Username updated Successfully")
-})
+userRouter.patch('/users/patch/:UserID',updateUserPasswordControllers)
 
-userRouter.delete('/users/delete/:id',(req,res)=>{
-    res.status(201).send("Deleted Succesfully")
-})
+userRouter.delete('/users/delete/:UserID',deleteUserController)
 
 
 export default userRouter;

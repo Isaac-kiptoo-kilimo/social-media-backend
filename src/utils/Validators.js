@@ -21,3 +21,24 @@ export const loginUserValidator = (user) => {
     });
     return loginUserValidatorSchema.validate(user);
 }
+
+
+export  const updateUserValidator=(updateduser)=>{
+    const updateUserValidatorSchema=joi.object({
+        Username: joi.string().required(),
+        TagName: joi.string().required(),
+        Location: joi.string().required(),
+    })
+
+    return updateUserValidatorSchema.validate(updateduser);
+}
+
+
+
+export  const updateUserPasswordValidator=(updateduser)=>{
+    const updateUserPassValidatorSchema=joi.object({
+        Password: joi.string().min(4).required(),
+    })
+
+    return updateUserPassValidatorSchema.validate(updateduser);
+}

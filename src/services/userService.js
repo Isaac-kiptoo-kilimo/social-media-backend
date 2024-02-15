@@ -53,16 +53,67 @@ try {
     return { error: 'Invalid Credentials' };
   }
 } catch (error) {
+  return error
+}
+}
+
+// updating user details based on the id
+
+export const updateUserService=async(updateUser)=>{
+  try {
+    const updatedUser=await poolRequest()
+    .input('Username', sql.VarChar,updateUser.Username)
+    .input('UserID', sql.VarChar,updateUser.UserID)
+    .input('TagName', sql.VarChar,updateUser.TagName)
+    .input('Location', sql.VarChar,updateUser.Location)
+  .query(`UPDATE tbl_user  SET Username = @Username, TagName = @TagName,Location = @Location  WHERE  userID = @userID`)
+console.log(updateUser);
+  return updatedUser
   
+  } catch (error) {
+    return error
+  }
 }
+
+export const updateUserPasswordService=async(updatePass)=>{
+  try {
+    const updatedPass=await poolRequest()
+    .input('Password', sql.VarChar,updatePass.Password)
+    .input('UserID', sql.VarChar,updatePass.UserID)
+  .query(`UPDATE tbl_user  SET Password = @Password  WHERE  userID = @userID`)
+console.log("user pass",updatePass);
+  return updatedPass
+  
+  } catch (error) {
+    return error
+  }
 }
+
+
+export const getSingleUserServices=async(UserID)=>{
+  const singleUser= await poolRequest()
+  .input('UserID', sql.VarChar,UserID)
+  .query('SELECT * FROM tbl_user WHERE UserID = @UserID ')
+  console.log('single user',singleUser.recordset);
+  return singleUser.recordset;
+}
+
 
 // Fetching all available users in the database
 export const getAllUsersService=async(users)=>{
     try {
-        const allUsers=poolRequest().query(`SELECT * FROM tbl_user`)
+        const allUsers=await poolRequest().query(`SELECT * FROM tbl_user`)
         return allUsers
     } catch (error) {
         return error
     }
+}
+
+// Fetching delete user
+export const deleteUserServices=async(UserID)=>{
+  const deletedUser= await poolRequest()
+  .input('UserID', sql.VarChar,UserID)
+  .query('DELETE FROM tbl_user WHERE UserID = @UserID ')
+  console.log('single user',deletedUser.recordset);
+  return deletedUser.recordset;
 }

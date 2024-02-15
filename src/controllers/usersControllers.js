@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
 import {v4} from 'uuid'
-import { authenticateUserService, getAllUsersService, registerNewUserService } from "../services/userService.js"
-import { RegisterUserValidator,loginUserValidator } from "../utils/Validators.js";
-import { notAuthorized, sendCreated, sendServerError} from "../helpers/helperFunctions.js"
+import { authenticateUserService, deleteUserServices, getAllUsersService, getSingleUserServices, registerNewUserService, updateUserPasswordService, updateUserService } from "../services/userService.js"
+import { RegisterUserValidator,loginUserValidator, updateUserPasswordValidator, updateUserValidator } from "../utils/Validators.js";
+import { notAuthorized, sendCreated, sendDeleteSuccess, sendServerError} from "../helpers/helperFunctions.js"
 
 
 export const createNewUserController = async (req, res) => {
@@ -55,6 +55,69 @@ export const createNewUserController = async (req, res) => {
   };
   
 
+  export const updateUserControllers = async (req, res) => {
+    try {
+      const { Username, TagName, Location } = req.body;
+      const { UserID } = req.params;
+
+      const { error } = updateUserValidator({ Username, TagName, Location });
+      if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+  
+      const updatedUser = await updateUserService({ Username, TagName, Location, UserID });
+  console.log('Updated one',updatedUser);
+      if (updatedUser.error) {
+        return sendServerError(res, updatedUser.error);
+      }
+  
+      return sendCreated(res, 'User updated successfully');
+    } catch (error) {
+      return sendServerError(res, 'Internal server error');
+    }
+  };
+  
+
+  export const updateUserPasswordControllers = async (req, res) => {
+    try {
+      const { Password } = req.body;
+      const { UserID } = req.params;
+
+      const { error } = updateUserPasswordValidator({ Password});
+      const updatedhashedPassword=bcrypt.hash(Password,8)
+      if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+  
+      const updatedPass = await updateUserPasswordService({ updatedhashedPassword, UserID });
+  console.log('Updated one',updatedPass);
+  
+      if (updatedPass.error) {
+        return sendServerError(res, updatedPass.error);
+      }
+  
+      return sendCreated(res, 'User updated successfully');
+    } catch (error) {
+      return sendServerError(res, 'Internal server error');
+    }
+  };
+  
+
+  export const getSingleUserController=async(req,res)=>{
+    try {
+      const {UserID}=req.params
+      const singleUser=await getSingleUserServices(UserID)
+      
+      console.log('single',singleUser); 
+      res.status(200).json({ user: singleUser });
+
+    } catch (error) {
+      return error
+    }
+  }
+
+
+
   export const getAllUsersController = async (req, res) => {
     try {
       const results = await getAllUsersService()
@@ -67,3 +130,14 @@ export const createNewUserController = async (req, res) => {
     }
   };
   
+
+  export const deleteUserController=async(req,res)=>{
+    try {
+      const {UserID}=req.params
+      const deletedUser=await deleteUserServices(UserID)
+      console.log('deleteed user',deletedUser); 
+      sendDeleteSuccess(res,"Deleted successfull")
+    } catch (error) {
+      return error
+    }
+  }

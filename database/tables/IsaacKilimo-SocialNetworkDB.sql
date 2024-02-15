@@ -1,6 +1,7 @@
 -- Create Database
 CREATE DATABASE SocialNetworkDB;
 USE SocialNetworkDB;
+SELECT * FROM tbl_user WHERE userID = '1d8be6aa-6f0e-43d9-87d1-637a257408e5'
 
 -- Create User Table
 CREATE TABLE tbl_user (
@@ -312,7 +313,7 @@ SET
     Location = 'newlocation'
 WHERE
     userID = 1;
-
+    GO
 
 
 -- Delete a user
