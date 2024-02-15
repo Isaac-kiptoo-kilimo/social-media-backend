@@ -115,35 +115,30 @@ POST http://localhost:5500/api/v1/photos
 Content-Type: application/json
 
 {
-    "Username": "Leah" ,
-    "Email": "leah@gmail.com" ,
-    "Password": "1234562@La",
-    "TagName": "@leah",
-    "Location": "Nyeri"
+    "UserID": "017e6d02-567c-42de-9feb-b58a9e7fba4a" ,
+    "PhotoURL": "https://www.pexels.com/photo/a-bunch-of-flowers-in-buckets-and-bags-20079575/"
 }
 
 
 
 ### updating a single photo
-PUT http://localhost:5500/api/v1/photos/update/2
+PUT http://localhost:5500/api/v1/photos/update/3352e56e-807b-4042-94c4-aafee75c1d68
 Content-Type: application/json
 
 {
-    "Username":"Leah2" ,
-    "TagName":"@leah",
-    "Location":"Nyeri"
+    "PhotoURL": "https://images.pexels.com/photos/13991574/pexels-photo-13991574.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+
 }
 
 
 
 ### updating only the text
-PATCH http://localhost:5500/api/v1/photos/patch/3
+PATCH http://localhost:5500/api/v1/photos/patch/b90ca026-3b8e-4605-8a54-e89422a87c82
 Content-Type: application/json
 
 {
-    "Username":"Leah" ,
-    "TagName":"@leah",
-    "Location":"Nyeri"
+    "PhotoURL": "https://images.pexels.com/photos/13991574/pexels-photo-13991574.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+
 }
 
 
@@ -154,12 +149,12 @@ GET http://localhost:5500/api/v1/photos/
 
 
 ### Fetching/getting single photo
-GET http://localhost:5500/api/v1/photos/single/1
+GET http://localhost:5500/api/v1/photos/single/3352e56e-807b-4042-94c4-aafee75c1d68
 
 
 
 ### Deleting a single photo
-DELETE  http://localhost:5500/api/v1/photos/delete/1
+DELETE  http://localhost:5500/api/v1/photos/delete/3352e56e-807b-4042-94c4-aafee75c1d68
 
 
 

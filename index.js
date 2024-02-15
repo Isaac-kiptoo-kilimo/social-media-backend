@@ -6,6 +6,7 @@ import userRouter from './src/routes/usersRoutes.js';
 import cors from 'cors'
 import rateLimitMiddleware from './src/middleware/rateLimitMiddleware.js';
 import postRouter from './src/routes/postsRoutes.js';
+import photoRouter from './src/routes/photosRoutes.js';
 
 const app=express();
 
@@ -21,6 +22,7 @@ rateLimitMiddleware(app);
 
 app.use('/api/v1',userRouter)
 app.use('/api/v1',postRouter)
+app.use('/api/v1',photoRouter)
 
 app.listen(PORT,()=>{
     logger.info(`This App is running on port : ${PORT}`);

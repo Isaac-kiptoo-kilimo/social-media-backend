@@ -1,24 +1,21 @@
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+
 import dotenv from 'dotenv'
 
 import {poolRequest,sql} from '../dbconnect/dbConnect.js'
 
 dotenv.config();
 
-// Register user service
-export const registerNewUserService=async(newUser)=>{
-
+// Register photo service
+export const createPhotoService=async(photo)=>{
+  
   try {
     const result=await poolRequest()
-    .input('UserID', sql.VarChar,newUser.UserID)
-    .input('Username', sql.VarChar,newUser.Username)
-    .input('Email', sql.VarChar,newUser.Email)
-    .input('Password', sql.VarChar,newUser.Password)
-    .input('TagName', sql.VarChar,newUser.TagName)
-    .input('Location', sql.VarChar,newUser.Location)
-    .query(`INSERT INTO tbl_user (UserID,Username,Email,Password,TagName,Location) VALUES(@UserID,@Username,@Email,@Password,@TagName,@Location)`)
-
+    .input('UserID', sql.VarChar,photo.UserID )
+    .input('PhotoID', sql.VarChar,photo.PhotoID )
+    .input('PhotoURL', sql.VarChar,photo.PhotoURL)
+    .input('UploadDate', sql.DateTime,photo.UploadDate)
+    .query('INSERT INTO Photo (PhotoID,UserID,PhotoURL,UploadDate) VALUES(@PhotoID,@UserID,@PhotoURL,@UploadDate)')
+    console.log('results',result);
     return result;
 
   } catch (error) {
@@ -26,63 +23,19 @@ export const registerNewUserService=async(newUser)=>{
   }
 };
 
-// Login user and generate token which returns user details except the password
+    
 
-export const authenticateUserService=async(user)=>{
-try {
-  const userFoundResponse=await poolRequest()
-  .input('Email', sql.VarChar, user.Email)
-  .query('SELECT * FROM tbl_user WHERE Email=@Email')
+// updating photo details based on the id
 
-  if(userFoundResponse.recordset[0]){
-    if(await bcrypt.compare(user.Password,userFoundResponse.recordset[0].Password)){
-
-      let token=jwt.sign({
-        UserID:userFoundResponse.recordset[0].UserID,
-        Password:userFoundResponse.recordset[0].Password,
-        Email:userFoundResponse.recordset[0].Email
-      },process.env.SECRET_KEY,{ expiresIn: "24h" })
-      console.log("Token is",token);
-      const {Password,...user}=userFoundResponse.recordset[0]
-      return {user,token:`JWT ${token}`}
-
-    }else{
-      return { error: 'Invalid Credentials' };
-    }
-  }else{
-    return { error: 'Invalid Credentials' };
-  }
-} catch (error) {
-  return error
-}
-}
-
-// updating user details based on the id
-
-export const updateUserService=async(updateUser)=>{
+export const updatePhotoService=async(updatePhoto)=>{
   try {
-    const updatedUser=await poolRequest()
-    .input('Username', sql.VarChar,updateUser.Username)
-    .input('UserID', sql.VarChar,updateUser.UserID)
-    .input('TagName', sql.VarChar,updateUser.TagName)
-    .input('Location', sql.VarChar,updateUser.Location)
-  .query(`UPDATE tbl_user  SET Username = @Username, TagName = @TagName,Location = @Location  WHERE  userID = @userID`)
-console.log(updateUser);
-  return updatedUser
-  
-  } catch (error) {
-    return error
-  }
-}
-
-export const updateUserPasswordService=async(updatePass)=>{
-  try {
-    const updatedPass=await poolRequest()
-    .input('Password', sql.VarChar,updatePass.Password)
-    .input('UserID', sql.VarChar,updatePass.UserID)
-  .query(`UPDATE tbl_user  SET Password = @Password  WHERE  userID = @userID`)
-console.log("user pass",updatePass);
-  return updatedPass
+    const updatedPhoto=await poolRequest()
+    .input('PhotoID', sql.VarChar,updatePhoto.PhotoID )
+    .input('PhotoURL', sql.VarChar,updatePhoto.PhotoURL)
+    .input('UploadDate', sql.DateTime,updatePhoto.UploadDate)
+    .query(`UPDATE Photo  SET PhotoID=@PhotoID, PhotoURL=@PhotoURL, UploadDate=@UploadDate  WHERE  PhotoID=@PhotoID`)
+console.log("updated",updatePhoto);
+  return updatedPhoto
   
   } catch (error) {
     return error
@@ -90,30 +43,46 @@ console.log("user pass",updatePass);
 }
 
 
-export const getSingleUserServices=async(UserID)=>{
-  const singleUser= await poolRequest()
-  .input('UserID', sql.VarChar,UserID)
-  .query('SELECT * FROM tbl_user WHERE UserID = @UserID ')
-  console.log('single user',singleUser.recordset);
-  return singleUser.recordset;
+// updating the photo url
+export const updatePhotoUrlService=async(updatePhotoUrl)=>{
+  try {
+    const updatedPhotoUrl=await poolRequest()
+    .input('PhotoID', sql.VarChar,updatePhotoUrl.PhotoID )
+    .input('PhotoURL', sql.VarChar,updatePhotoUrl.PhotoURL)
+    .query(`UPDATE Photo  SET PhotoURL = @PhotoURL  WHERE  PhotoID = @PhotoID`)
+    console.log("updating content",updatePhotoUrl);
+  return updatedPhotoUrl
+  
+  } catch (error) {
+    return error
+  }
 }
 
 
-// Fetching all available users in the database
-export const getAllUsersService=async(users)=>{
+export const getSinglePhotoServices=async(PhotoID)=>{
+  const singlePhoto= await poolRequest()
+  .input('PhotoID', sql.VarChar,PhotoID)
+  .query('SELECT * FROM Photo WHERE PhotoID = @PhotoID ')
+  console.log('single photo',singlePhoto.recordset);
+  return singlePhoto.recordset;
+}
+
+
+// Fetching all available photos in the database
+export const getAllPhotoService=async()=>{
     try {
-        const allUsers=await poolRequest().query(`SELECT * FROM tbl_user`)
-        return allUsers
+        const allPhotos=await poolRequest().query(`SELECT * FROM Photo`)
+        return allPhotos
     } catch (error) {
         return error
     }
 }
 
-// Fetching delete user
-export const deleteUserServices=async(UserID)=>{
-  const deletedUser= await poolRequest()
-  .input('UserID', sql.VarChar,UserID)
-  .query('DELETE FROM tbl_user WHERE UserID = @UserID ')
-  console.log('single user',deletedUser.recordset);
-  return deletedUser.recordset;
+// Fetching delete photo
+export const deletePhotoServices=async(PhotoID)=>{
+  const deletedPhoto= await poolRequest()
+  .input('PhotoID', sql.VarChar,PhotoID)
+  .query('DELETE FROM Photo WHERE PhotoID = @PhotoID ')
+  console.log('single photo',deletedPhoto.recordset);
+  return deletedPhoto.recordset;
 }
