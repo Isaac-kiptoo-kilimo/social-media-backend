@@ -22,9 +22,9 @@ CREATE TABLE Post (
     PostID VARCHAR(255) PRIMARY KEY,
     UserID VARCHAR(255),
     Content TEXT,
-    PostDate DATETIME,
-    Likes INT,
-    Comments INT,
+    PostDate DATETIME DEFAULT GETDATE(),
+    Likes INT DEFAULT 0,
+    Comments INT DEFAULT 0,
     FOREIGN KEY (UserID) REFERENCES tbl_user(UserID)
 );
 

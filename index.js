@@ -5,6 +5,7 @@ import logger from './src/utils/loggers.js'
 import userRouter from './src/routes/usersRoutes.js';
 import cors from 'cors'
 import rateLimitMiddleware from './src/middleware/rateLimitMiddleware.js';
+import postRouter from './src/routes/postsRoutes.js';
 
 const app=express();
 
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 rateLimitMiddleware(app);
 
 app.use('/api/v1',userRouter)
+app.use('/api/v1',postRouter)
 
 app.listen(PORT,()=>{
     logger.info(`This App is running on port : ${PORT}`);

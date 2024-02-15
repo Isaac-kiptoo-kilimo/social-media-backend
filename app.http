@@ -64,36 +64,30 @@ POST http://localhost:5500/api/v1/posts
 Content-Type: application/json
 
 {
-    "Username": "Leah" ,
-    "Email": "leah@gmail.com" ,
-    "Password": "1234562@La",
-    "TagName": "@leah",
-    "Location": "Nyeri"
+    "UserID": "017e6d02-567c-42de-9feb-b58a9e7fba4a" ,
+    "Content": "This week reported error" ,
+    "Likes": 10,
+    "Comments": 5
 }
 
-
 ### updating a single post
-PUT http://localhost:5500/api/v1/posts/update/2
+PUT http://localhost:5500/api/v1/posts/update/372cb816-52a8-4afb-8b12-37e69bd1ba2a
 Content-Type: application/json
 
 {
-    "Username":"Leah2" ,
-    "TagName":"@leah",
-    "Location":"Nyeri"
+     "Content": "I am loving this" ,
+    "Likes": 5,
+    "Comments": 6
 }
 
 
 ### updating only the text
-PATCH http://localhost:5500/api/v1/posts/patch/3
+PATCH http://localhost:5500/api/v1/posts/patch/b28a2524-3d59-4334-9878-bd28efec9696
 Content-Type: application/json
 
 {
-    "Username":"Leah" ,
-    "TagName":"@leah",
-    "Location":"Nyeri"
+     "Content": "I new am loving this"
 }
-
-
 
 ### Fetching/getting all posts
 GET http://localhost:5500/api/v1/posts/
@@ -101,12 +95,12 @@ GET http://localhost:5500/api/v1/posts/
 
 
 ### Fetching/getting single post
-GET http://localhost:5500/api/v1/posts/single/1
+GET http://localhost:5500/api/v1/posts/single/372cb816-52a8-4afb-8b12-37e69bd1ba2a
 
 
 
 ### Deleting a single post
-DELETE  http://localhost:5500/api/v1/posts/delete/1
+DELETE  http://localhost:5500/api/v1/posts/delete/372cb816-52a8-4afb-8b12-37e69bd1ba2a
 
 
 
