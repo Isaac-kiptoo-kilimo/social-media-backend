@@ -1,18 +1,16 @@
 import {v4} from 'uuid'
 import { notAuthorized, sendCreated, sendDeleteSuccess, sendServerError} from "../helpers/helperFunctions.js"
+import { createPostService, deletePostServices, getAllPostsService, getSinglePostServices, updateContentService, updatePostService } from '../services/postService.js';
+import { createPostValidator, updateContentValidator, updatePostValidator } from '../validators/postsValidators.js';
 
 
-export const createMessageController = async (req, res) => {
+export const createPostController = async (req, res) => {
     try {
 
-      const {SenderID,Content,Likes,Comments } = req.body;
+      const {UserID,Content,Likes,Comments } = req.body;
       console.log(req.body);
-// ,
-// ,
-// ReceiverID,
-//     MessageDate, 
-//     Content 
-      const MessageID = v4();
+
+      const PostID = v4();
       const { error } = createPostValidator({ Content });
       console.log("error",error);
       if (error) {
@@ -35,7 +33,7 @@ export const createMessageController = async (req, res) => {
   };
 
 
-  export const updateMessageControllers = async (req, res) => {
+  export const updatePostControllers = async (req, res) => {
     try {
       const { Content,Likes,Comments } = req.body;
       const { PostID } = req.params;
@@ -83,7 +81,7 @@ export const createMessageController = async (req, res) => {
   };
   
 
-  export const getSingleMessageController=async(req,res)=>{
+  export const getSingleSingleController=async(req,res)=>{
     try {
       const {PostID}=req.params
       const singlePost=await getSinglePostServices(PostID)
@@ -98,7 +96,7 @@ export const createMessageController = async (req, res) => {
 
 
 
-  export const getAllMessagesController = async (req, res) => {
+  export const getAllPostsController = async (req, res) => {
     try {
       const results = await getAllPostsService()
         const posts=results.recordset
@@ -111,7 +109,7 @@ export const createMessageController = async (req, res) => {
   };
   
 
-  export const deleteMessageController=async(req,res)=>{
+  export const deletePostController=async(req,res)=>{
     try {
       const {PostID}=req.params
       const deletedPost=await deletePostServices(PostID)

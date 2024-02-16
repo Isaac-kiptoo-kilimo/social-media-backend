@@ -1,23 +1,22 @@
 
 import joi from 'joi';
 
-export  const createPostValidator=(post)=>{
-    const createPostValidatorSchema=joi.object({
+export  const createCommentValidator=(Comment)=>{
+    const createCommentValidatorSchema=joi.object({
         Content: joi.string().required()
     })
 
-    return createPostValidatorSchema.validate(post);
+    return createCommentValidatorSchema.validate(Comment);
 }
 
 
-
-export  const updatePostValidator=(updatedpost)=>{
-    const updatePostValidatorSchema=joi.object({
+export  const updateCommentValidator=(updatedComment)=>{
+    const updateCommentValidatorSchema=joi.object({
         Content: joi.string().required()
 
     })
 
-    return updatePostValidatorSchema.validate(updatedpost);
+    return updateCommentValidatorSchema.validate(updatedComment);
 }
 
 

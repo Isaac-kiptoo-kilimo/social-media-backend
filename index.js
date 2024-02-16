@@ -7,6 +7,9 @@ import cors from 'cors'
 import rateLimitMiddleware from './src/middleware/rateLimitMiddleware.js';
 import postRouter from './src/routes/postsRoutes.js';
 import photoRouter from './src/routes/photosRoutes.js';
+import groupRouter from './src/routes/groupRoutes.js';
+import commentRouter from './src/routes/commentRoutes.js';
+import eventRouter from './src/routes/EventRoutes.js';
 
 const app=express();
 
@@ -23,6 +26,10 @@ rateLimitMiddleware(app);
 app.use('/api/v1',userRouter)
 app.use('/api/v1',postRouter)
 app.use('/api/v1',photoRouter)
+app.use('/api/v1',groupRouter)
+app.use('/api/v1',commentRouter)
+app.use('/api/v1',eventRouter)
+// app.use('/api/v1',groupRouter)
 
 app.listen(PORT,()=>{
     logger.info(`This App is running on port : ${PORT}`);

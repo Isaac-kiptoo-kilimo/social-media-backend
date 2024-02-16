@@ -108,7 +108,7 @@ CREATE TABLE Event (
     EventID VARCHAR(255) PRIMARY KEY,
     EventName VARCHAR(255),
     Description TEXT,
-    EventDate DATETIME,
+    EventDate VARCHAR(100),
     Location VARCHAR(100),
     EventPosterURL VARCHAR(255)
 );

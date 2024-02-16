@@ -6,7 +6,7 @@ import { createEventService, deleteEventServices, getAllEventsService, getSingle
 
 export const createEventController = async (req, res) => {
     try {
-      const { EventName,EventPosterURL,Description,Location,EventDate } = req.body;
+      const { EventName,Description,Location,EventDate } = req.body;
       console.log(req.body);
 
       const EventID = v4();
@@ -15,7 +15,7 @@ export const createEventController = async (req, res) => {
       if (error) {
         return res.status(400).send(error.details[0].message);
       } else {
-        const createdEvent = { EventID, EventPosterURL,Description,EventName,Location,EventDate};
+        const createdEvent = { EventID, Description,EventName,Location,EventDate};
   
         const result = await createEventService(createdEvent);
   
@@ -33,14 +33,14 @@ export const createEventController = async (req, res) => {
 
   export const updateEventControllers = async (req, res) => {
     try {
-      const { EventPosterURL,Description,Location,EventDate } = req.body;
+      const { Description,Location,EventDate } = req.body;
       const { EventID } = req.params;
-      const { error } = updateEventValidator(req.body);
+      const { error } = updateEventValidator({Description,Location,EventDate });
       if (error) {
         return res.status(400).json({ error: error.details[0].message });
       }
   
-      const updatedEvent = await updateEventService({EventPosterURL,Description,Location,EventDate, EventID });
+      const updatedEvent = await updateEventService({Description,Location,EventDate, EventID });
       console.log('Updated one',updatedEvent);
       if (updatedEvent.error) {
         return sendServerError(res, updatedEvent.error);
