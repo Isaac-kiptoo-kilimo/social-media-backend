@@ -1,19 +1,20 @@
 import {Router} from 'express';
+import { createGroupMembersController, deleteGroupMembersControllers, getAllGroupMembersController, getSingleGroupMembersController } from '../controllers/groupMembers.js';
 
 
-const groupRouter=Router();
+const groupMemberRouter=Router();
 
-groupMemberRouter.post('/members',)
+groupMemberRouter.post('/members', createGroupMembersController)
 
-groupMemberRouter.get('/members',  )
+groupMemberRouter.get('/members',  getAllGroupMembersController)
 
-groupMemberRouter.get('/members/single/:GroupMemberID',  )
+groupMemberRouter.get('/members/single/:GroupID', getSingleGroupMembersController )
 
-groupMemberRouter.put('/members/update/:GroupMemberID', )
+// groupMemberRouter.put('/members/update/:GroupMemberID', )
 
-groupMemberRouter.patch('/members/patch/:GroupMemberID', )
+// groupMemberRouter.patch('/members/patch/:GroupMemberID', )
 
-groupMemberRouter.delete('/members/delete/:GroupMemberID',)
+groupMemberRouter.delete('/members/delete/:GroupID', deleteGroupMembersControllers)
 
 
 export default groupMemberRouter;

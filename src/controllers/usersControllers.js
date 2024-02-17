@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import {v4} from 'uuid'
-import { authenticateUserService, deleteUserServices, getAllUsersService, getSingleUserServices, registerNewUserService, updateUserPasswordService, updateUserService } from "../services/userService.js"
+import { authenticateUserService, deleteUserServices, getAllUsersService, getSingleUserByEmaiServices, getSingleUserServices, registerNewUserService, updateUserPasswordService, updateUserService } from "../services/userService.js"
 import { RegisterUserValidator,loginUserValidator, updateUserPasswordValidator, updateUserValidator } from "../utils/Validators.js";
 import { notAuthorized, sendCreated, sendDeleteSuccess, sendServerError} from "../helpers/helperFunctions.js"
 
@@ -10,6 +10,12 @@ export const createNewUserController = async (req, res) => {
       const { Username, Email, Password, TagName, Location } = req.body;
       console.log(req.body);
   
+      const existingUser = await getSingleUserByEmaiServices(Email);
+      console.log(existingUser);
+    if (existingUser) {
+      return res.status(400).send("User with the provided email or username already exists");
+    }else{
+
       const UserID = v4();
       const { error } = RegisterUserValidator({ Username, Email, Password, TagName, Location });
       console.log("error",error);
@@ -27,11 +33,12 @@ export const createNewUserController = async (req, res) => {
           sendCreated(res, 'User created successfully');
       }
       }
+    }
     } catch (error) {
       sendServerError(res, error.message);
     }
   };
-
+  
 
   export const loginUserController = async (req, res) => {
     try {
@@ -54,24 +61,29 @@ export const createNewUserController = async (req, res) => {
     }
   };
   
-
   export const updateUserControllers = async (req, res) => {
     try {
       const { Username, TagName, Location } = req.body;
       const { UserID } = req.params;
-
+      const existingUser = await getSingleUserServices(UserID);
+  
+      if (existingUser.rowsAffected[0] === 0) {
+        return res.status(400).json({ message: "User not found" });
+      }else{
+  
       const { error } = updateUserValidator({ Username, TagName, Location });
       if (error) {
         return res.status(400).json({ error: error.details[0].message });
       }
   
       const updatedUser = await updateUserService({ Username, TagName, Location, UserID });
-  console.log('Updated one',updatedUser);
+      console.log('Updated one', updatedUser);
+  
       if (updatedUser.error) {
         return sendServerError(res, updatedUser.error);
       }
-  
       return sendCreated(res, 'User updated successfully');
+    }
     } catch (error) {
       return sendServerError(res, 'Internal server error');
     }
@@ -107,10 +119,13 @@ export const createNewUserController = async (req, res) => {
     try {
       const {UserID}=req.params
       const singleUser=await getSingleUserServices(UserID)
+      if(singleUser.rowsAffected==0){
+        res.status(400).json({message:"user Not found"})
+    }else{
+      const result=singleUser.recordset
+      res.status(200).json({ user: result });
+    } 
       
-      console.log('single',singleUser); 
-      res.status(200).json({ user: singleUser });
-
     } catch (error) {
       return error
     }
@@ -134,9 +149,15 @@ export const createNewUserController = async (req, res) => {
   export const deleteUserController=async(req,res)=>{
     try {
       const {UserID}=req.params
+      const existingUser=await getSingleUserServices(UserID)
+      if(existingUser.rowsAffected==0){
+        res.status(400).json({message:"user Not found"})
+    }else{
       const deletedUser=await deleteUserServices(UserID)
       console.log('deleteed user',deletedUser); 
       sendDeleteSuccess(res,"Deleted successfull")
+    } 
+      
     } catch (error) {
       return error
     }

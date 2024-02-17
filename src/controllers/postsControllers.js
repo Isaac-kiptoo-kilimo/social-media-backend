@@ -1,6 +1,6 @@
 import {v4} from 'uuid'
 import { notAuthorized, sendCreated, sendDeleteSuccess, sendServerError} from "../helpers/helperFunctions.js"
-import { createPostService, deletePostServices, getAllPostsService, getSinglePostServices, updateContentService, updatePostService } from '../services/postService.js';
+import { createPostService, deletePostServices, getAllPostsAndCommentsService, getAllPostsService, getSinglePostServices, updateContentService, updatePostService } from '../services/postService.js';
 import { createPostValidator, updateContentValidator, updatePostValidator } from '../validators/postsValidators.js';
 
 
@@ -99,6 +99,19 @@ export const createPostController = async (req, res) => {
   export const getAllPostsController = async (req, res) => {
     try {
       const results = await getAllPostsService()
+        const posts=results.recordset[0]
+        console.log(posts);
+      res.status(200).json({ Posts: posts });
+    } catch (error) {
+      console.error("Error fetching all posts:", error);
+      res.status(500).json("Internal server error");
+    }
+  };
+
+  export const getAllUserPostsController = async (req, res) => {
+    try {
+      const {UserID}=req.params
+      const results = await getAllPostsAndCommentsService(UserID)
         const posts=results.recordset
         console.log(posts);
       res.status(200).json({ Posts: posts });

@@ -4,10 +4,10 @@ POST http://localhost:5500/api/v1/users/register
 Content-Type: application/json
 
 {
-    "Username": "Kelvin" ,
-    "Email": "kelvin@gmail.com" ,
+    "Username": "NGENO" ,
+    "Email": "NGENO@gmail.com" ,
     "Password": "1234562@K",
-    "TagName": "@kelvin",
+    "TagName": "@rose",
     "Location": "Nyeri"
 }
 
@@ -16,8 +16,8 @@ POST http://localhost:5500/api/v1/users/login
 Content-Type: application/json
 
 {
-    "Email": "isaac@gmail.com",
-    "Password": "12345@Ia"
+    "Email": "NGENO@gmail.com",
+    "Password": "1234562@K"
 }
 
 
@@ -26,7 +26,7 @@ PUT http://localhost:5500/api/v1/users/update/017e6d02-567c-42de-9feb-b58a9e7fba
 Content-Type: application/json
 
 {
-    "Username":"Leah2" ,
+    "Username":"Leah25" ,
     "TagName":"@leah2",
     "Location":"Nyeri2"
 }
@@ -48,12 +48,12 @@ GET http://localhost:5500/api/v1/users/
 
 
 ### Fetching/getting single user
-GET http://localhost:5500/api/v1/users/single/eaf8c520-0851-4681-8de3-2646c0492744
+GET http://localhost:5500/api/v1/users/single/a10d55f1-7053-485f-b9df-f8da39d59080
 
 
 
 ### Deleting a single user
-DELETE  http://localhost:5500/api/v1/users/delete/eaf8c520-0851-4681-8de3-2646c0492744
+DELETE  http://localhost:5500/api/v1/users/delete/a10d55f1-7053-485f-b9df-f8da39d59080
 
 
 
@@ -64,8 +64,8 @@ POST http://localhost:5500/api/v1/posts
 Content-Type: application/json
 
 {
-    "UserID": "017e6d02-567c-42de-9feb-b58a9e7fba4a" ,
-    "Content": "This week reported error" ,
+    "UserID": "ba4abf58-33e5-4901-b528-bf7bbd55ffd0" ,
+    "Content": "This is cool place loving it" ,
     "Likes": 10,
     "Comments": 5
 }
@@ -75,7 +75,7 @@ PUT http://localhost:5500/api/v1/posts/update/372cb816-52a8-4afb-8b12-37e69bd1ba
 Content-Type: application/json
 
 {
-     "Content": "I am loving this" ,
+     "Content": "This is cool place loving it" ,
     "Likes": 5,
     "Comments": 6
 }
@@ -90,12 +90,17 @@ Content-Type: application/json
 }
 
 ### Fetching/getting all posts
+GET http://localhost:5500/api/v1/user/posts/9c402dd7-6623-4689-b4c2-f8529a3d0edc
+
+
+
+### Fetching/getting all posts
 GET http://localhost:5500/api/v1/posts/
 
 
 
 ### Fetching/getting single post
-GET http://localhost:5500/api/v1/posts/single/372cb816-52a8-4afb-8b12-37e69bd1ba2a
+GET http://localhost:5500/api/v1/posts/single/9c402dd7-6623-4689-b4c2-f8529a3d0edc
 
 
 
@@ -247,6 +252,33 @@ GET http://localhost:5500/api/v1/groups/single/7d554ca6-2283-4755-b48e-1f316bb54
 DELETE  http://localhost:5500/api/v1/groups/delete/7d554ca6-2283-4755-b48e-1f316bb540de
 
 
+
+
+##****************************************************GROUPSMEMBERS**************************************************************##
+
+### create a GROUPSMEMBERS
+POST http://localhost:5500/api/v1/members
+Content-Type: application/json
+
+{
+    "GroupID": "42db9bca-a1ad-45fa-b364-aa0910b98fdb" ,
+    "MemberID": "017e6d02-567c-42de-9feb-b58a9e7fba4a" 
+}
+
+
+
+### Fetching/getting all groups
+GET http://localhost:5500/api/v1/members/
+
+
+### Fetching/getting single group
+GET http://localhost:5500/api/v1/members/single/42db9bca-a1ad-45fa-b364-aa0910b98fdb
+
+### Deleting a single group
+DELETE  http://localhost:5500/api/v1/members/delete/7d554ca6-2283-4755-b48e-1f316bb540de
+
+
+
 ##****************************************************EVENTS**************************************************************##
 
 ### create an event
@@ -284,77 +316,107 @@ GET http://localhost:5500/api/v1/events/single/02dbb5f4-6e00-442b-a786-25dce8ed8
 ### Deleting a single event
 DELETE  http://localhost:5500/api/v1/events/delete/02dbb5f4-6e00-442b-a786-25dce8ed8e8b
 
+##*******************************************************************EventAtendees*******************************************
+
+### user registering for an event
+POST http://localhost:5500/api/v1/event/attendee
+Content-Type: application/json
+
+{
+    "EventID": "02dbb5f4-6e00-442b-a786-25dce8ed8e8b" ,
+    "AttendeeID": "017e6d02-567c-42de-9feb-b58a9e7fba4a" 
+}
+
+# ### updating a single event
+# PUT http://localhost:5500/api/v1/events/update/02dbb5f4-6e00-442b-a786-25dce8ed8e8b
+# Content-Type: application/json
+
+# {
+#     "EventPosterURL": "https://www.pexels.com/photo/a-bunch-of-flowers-in-buckets-and-bags-20079575/" ,
+#     "Description": "This will take place next week",
+#     "Location": "Diani",
+#     "EventDate": "20/2/2024"
+# }
+
+
+
+### Fetching/getting all Events Attendee
+GET http://localhost:5500/api/v1/event/attendee
+
+
+### Fetching/getting single event
+GET http://localhost:5500/api/v1/event/attendee/02dbb5f4-6e00-442b-a786-25dce8ed8e8b
+
+### Deleting a single event attendee
+DELETE  http://localhost:5500/api/v1/event/attendee/delete/02dbb5f4-6e00-442b-a786-25dce8ed8e8b
+
 
 
 ##****************************************************FRIENDSHIP**************************************************************##
 
 ### Become friends
-POST http://localhost:5500/api/v1/friends
+POST http://localhost:5500/api/v1/friendships
 Content-Type: application/json
 
 {
-    "Username": "Leah" ,
-    "Email": "leah@gmail.com" ,
-    "Password": "1234562@La",
-    "TagName": "@leah",
-    "Location": "Nyeri"
+    "User1ID": "88c681ad-1cc7-4b18-a777-70717283edce" ,
+    "User2ID": "d7b11358-d5d7-4ae7-ae4e-ecfff851467b"
 }
 
+        
 ### updating a single friendship
-PUT http://localhost:5500/api/v1/friends/update/2
+PATCH http://localhost:5500/api/v1/friendships/patch/96e7428c-4de7-478e-884e-9e3bef8cad5a
 Content-Type: application/json
 
 {
-    "Username":"Leah2" ,
-    "TagName":"@leah",
-    "Location":"Nyeri"
-}
 
+}
 
 
 ### Fetching/getting all friends
-GET http://localhost:5500/api/v1/friends/
+GET http://localhost:5500/api/v1/friendships/
 
 
-### Fetching/getting single friend
-GET http://localhost:5500/api/v1/friends/single/1
+### Fetching/getting all individual user friends
+GET http://localhost:5500/api/v1/user/friendships/88c681ad-1cc7-4b18-a777-70717283edce
+
+
+### Fetching/getting single friendship
+GET http://localhost:5500/api/v1/friendships/single/96e7428c-4de7-478e-884e-9e3bef8cad5a
+
 
 ### Deleting a single pfriend
-DELETE  http://localhost:5500/api/v1/friends/delete/1
+DELETE  http://localhost:5500/api/v1/friendships/delete/2e804b63-8aba-4c68-b05e-7afece1efbb2
 
 
 ##****************************************************MESSAGES**************************************************************##
 
 ### create a message
-POST http://localhost:5500/api/v1/message
+POST http://localhost:5500/api/v1/messages
 Content-Type: application/json
 
 {
-    "Username": "Leah" ,
-    "Email": "leah@gmail.com" ,
-    "Password": "1234562@La",
-    "TagName": "@leah",
-    "Location": "Nyeri"
+    "SenderID": "017e6d02-567c-42de-9feb-b58a9e7fba4a" ,
+    "ReceiverID": "ba4abf58-33e5-4901-b528-bf7bbd55ffd0" ,
+    "Content": "I am in Love with You"
 }
 
 ### updating a single message
-PUT http://localhost:5500/api/v1/message/update/2
+PUT http://localhost:5500/api/v1/messages/update/288d9bb4-06d9-4ebf-a05d-09098f3af541
 Content-Type: application/json
 
 {
-    "Username":"Leah2" ,
-    "TagName":"@leah",
-    "Location":"Nyeri"
+    "Content": "Sorry i mean am in Love with Your cloth"
 }
 
 
 
 ### Fetching/getting all messages
-GET http://localhost:5500/api/v1/message/
+GET http://localhost:5500/api/v1/messages
 
 
-### Fetching/getting single messaget
-GET http://localhost:5500/api/v1/message/single/1
+### Fetching/getting single message
+GET http://localhost:5500/api/v1/messages/single/288d9bb4-06d9-4ebf-a05d-09098f3af541
 
 ### Deleting a single message
-DELETE  http://localhost:5500/api/v1/message/delete/1
+DELETE  http://localhost:5500/api/v1/messags/delete/288d9bb4-06d9-4ebf-a05d-09098f3af541

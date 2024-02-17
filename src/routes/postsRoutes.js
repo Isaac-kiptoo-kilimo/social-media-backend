@@ -1,11 +1,13 @@
 import {Router} from 'express';
-import { createPostController, deletePostController, getAllPostsController, getSingleSingleController, updateContentControllers, updatePostControllers } from '../controllers/postsControllers.js';
+import { createPostController, deletePostController, getAllPostsController, getAllUserPostsController, getSingleSingleController, updateContentControllers, updatePostControllers } from '../controllers/postsControllers.js';
 
 const postRouter=Router();
 
 postRouter.post('/posts',createPostController )
 
 postRouter.get('/posts', getAllPostsController )
+postRouter.get('/user/posts/:UserID', getAllUserPostsController )
+
 
 postRouter.get('/posts/single/:PostID', getSingleSingleController)
 

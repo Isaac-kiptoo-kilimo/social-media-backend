@@ -39,7 +39,7 @@ export const createCommentController = async (req, res) => {
       const { Content } = req.body;
       const { CommentID } = req.params;
 
-      const CommentDate = new Date();    
+      const CommentDate = GETDATE();    
       const { error } = updateCommentValidator({Content });
       if (error) {
         return res.status(400).json({ error: error.details[0].message });

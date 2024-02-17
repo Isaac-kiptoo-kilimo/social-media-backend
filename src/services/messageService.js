@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
-import {poolRequest,sql} from '../dbconnect/dbConnect.js'
+import {poolRequest,sql} from '../utils/dbConnect.js'
 
 dotenv.config();
 
@@ -11,7 +11,7 @@ export const createMessageService=async(message)=>{
   
   try {
     const result=await poolRequest()
-    .input('MessageID ', sql.VarChar,message.MessageID  )
+    .input('MessageID', sql.VarChar,message.MessageID  )
     .input('SenderID', sql.VarChar,message.SenderID )
     .input('ReceiverID', sql.VarChar,message.ReceiverID )
     .input('Content', sql.VarChar,message.Content)
@@ -31,7 +31,7 @@ export const createMessageService=async(message)=>{
 export const updateMessageService=async(updateMessage)=>{
   try {
     const updatedMessage=await poolRequest()
-    .input('MessageID ', sql.VarChar,updateMessage.MessageID  )
+    .input('MessageID', sql.VarChar,updateMessage.MessageID  )
     .input('Content', sql.VarChar,updateMessage.Content)
     .input('MessageDate', sql.DateTime,updateMessage.MessageDate)
   .query(`UPDATE Message  SET MessageID=@MessageID, Content = @Content, MessageDate = @MessageDate  WHERE  MessageID = @MessageID`)

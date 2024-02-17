@@ -1,8 +1,7 @@
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+
 import dotenv from 'dotenv'
 
-import {poolRequest,sql} from '../dbconnect/dbConnect.js'
+import {poolRequest,sql} from '../utils/dbConnect.js'
 
 dotenv.config();
 
@@ -75,12 +74,31 @@ export const getSinglePostServices=async(PostID)=>{
 // Fetching all available post in the database
 export const getAllPostsService=async(posts)=>{
     try {
-        const allPosts=await poolRequest().query(`SELECT * FROM Post`)
+        const allPosts=await poolRequest().query(`SELECT Post.*, Comment.*
+        FROM Post
+        LEFT JOIN Comment ON Post.PostID = Comment.PostID`)
         return allPosts
     } catch (error) {
         return error
     }
 }
+
+export const getAllPostsAndCommentsService=async(UserID)=>{
+  try {
+      const allPosts=await poolRequest()
+      .input('UserID', sql.VarChar,UserID)
+      .query(
+        `SELECT Post.*, Comment.*
+      FROM Post
+      LEFT JOIN Comment ON Post.PostID = Comment.PostID
+      WHERE Post.UserID = @UserID`)
+      return allPosts
+  } catch (error) {
+      return error
+  }
+}
+
+
 
 // Fetching delete post
 export const deletePostServices=async(PostID)=>{

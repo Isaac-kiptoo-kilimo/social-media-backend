@@ -10,6 +10,10 @@ import photoRouter from './src/routes/photosRoutes.js';
 import groupRouter from './src/routes/groupRoutes.js';
 import commentRouter from './src/routes/commentRoutes.js';
 import eventRouter from './src/routes/EventRoutes.js';
+import messageRouter from './src/routes/messageRoutes.js';
+import friendshipRouter from './src/routes/FriendshipRoutes.js';
+import groupMemberRouter from './src/routes/groupMemberRoutes.js';
+import eventAttendeeRouter from './src/routes/eventAttendeeRoutes.js';
 
 const app=express();
 
@@ -29,7 +33,11 @@ app.use('/api/v1',photoRouter)
 app.use('/api/v1',groupRouter)
 app.use('/api/v1',commentRouter)
 app.use('/api/v1',eventRouter)
-// app.use('/api/v1',groupRouter)
+app.use('/api/v1',eventAttendeeRouter)
+app.use('/api/v1',messageRouter)
+app.use('/api/v1',friendshipRouter)
+app.use('/api/v1',groupMemberRouter)
+
 
 app.listen(PORT,()=>{
     logger.info(`This App is running on port : ${PORT}`);

@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
-import {poolRequest,sql} from '../dbconnect/dbConnect.js'
+import {poolRequest,sql} from '../utils/dbConnect.js'
 
 dotenv.config();
 
@@ -94,8 +94,20 @@ export const getSingleUserServices=async(UserID)=>{
   const singleUser= await poolRequest()
   .input('UserID', sql.VarChar,UserID)
   .query('SELECT * FROM tbl_user WHERE UserID = @UserID ')
-  console.log('single user',singleUser.recordset);
-  return singleUser.recordset;
+  console.log('single user',);
+  return singleUser
+}
+
+
+export const getSingleUserByEmaiServices=async(Email)=>{
+  const singleEmailUser= await poolRequest()
+  .input('Email', sql.VarChar,Email)
+  .query('SELECT * FROM tbl_user WHERE Email = @Email ')
+  console.log('single singleEmailUser',);
+  if(singleEmailUser.rowsAffected[0]>=0){
+    return singleEmailUser.rowsAffected[0]
+  }
+ 
 }
 
 

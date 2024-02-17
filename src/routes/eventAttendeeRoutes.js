@@ -1,19 +1,20 @@
 import {Router} from 'express';
-import { createEventController, deleteEventController, getAllEventsController, getSingleEventController, updateEventControllers, updateEventNameControllers } from '../controllers/eventsControllers';
-
-const eventRouter=Router();
-
-eventRouter.post('/events', createEventController )
-
-eventRouter.get('/events', getAllEventsController )
-
-eventRouter.get('/events/single/:EventID', getSingleEventController)
-
-eventRouter.put('/events/update/:EventID',updateEventControllers)
-
-eventRouter.patch('/events/patch/:EventID',updateEventNameControllers)
-
-eventRouter.delete('/events/delete/:EventID', deleteEventController)
+import { createEventAttendeesController, deleteEventAttendeesController, getAllEventAttendeessController, getSingleEventAttendeesController } from '../controllers/EventAttendeeControllers.js';
 
 
-export default eventRouter;
+const eventAttendeeRouter=Router();
+
+eventAttendeeRouter.post('/event/attendee', createEventAttendeesController )
+
+eventAttendeeRouter.get('/event/attendee', getAllEventAttendeessController )
+
+eventAttendeeRouter.get('/event/attendee/:EventID', getSingleEventAttendeesController)
+
+// eventAttendeeRouter.put('/event/attendee/:EventID',)
+
+// eventAttendeeRouter.patch('/events/patch/:EventID',)
+
+eventAttendeeRouter.delete('/event/attendee/delete/:EventID', deleteEventAttendeesController)
+
+
+export default eventAttendeeRouter;

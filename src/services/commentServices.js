@@ -1,7 +1,7 @@
 
 import dotenv from 'dotenv'
 
-import {poolRequest,sql} from '../dbconnect/dbConnect.js'
+import {poolRequest,sql} from '../utils/dbConnect.js'
 
 dotenv.config();
 

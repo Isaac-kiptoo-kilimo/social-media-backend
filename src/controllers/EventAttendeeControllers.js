@@ -1,28 +1,27 @@
 import {v4} from 'uuid'
-import { notAuthorized, sendCreated, sendDeleteSuccess, sendServerError} from "../helpers/helperFunctions.js"
-import { createEventValidator, updateEventNameValidator, updateEventValidator } from '../validators/EventValidator.js';
-import { createEventService, deleteEventServices, getAllEventsService, getSingleEventServices, updateEventNameService, updateEventService } from '../services/eventService.js';
+import {  sendCreated, sendDeleteSuccess, sendServerError} from "../helpers/helperFunctions.js"
+import { createEventAttendeeService, deleteEventAttendeesServices, getAllEventAttendeesService, getSingleEventAttendeeServices } from '../services/eventAttendeeServices.js';
+import { createEventAttendeeValidator } from '../validators/eventAttendees.js';
 
 
-export const createEventController = async (req, res) => {
+export const createEventAttendeesController = async (req, res) => {
     try {
-      const { EventName,Description,Location,EventDate } = req.body;
+      const { EventID,AttendeeID } = req.body;
       console.log(req.body);
-
-      const EventID = v4();
-      const { error } = createEventValidator( req.body);
+            
+      const { error } = createEventAttendeeValidator( req.body);
       console.log("error",error);
       if (error) {
         return res.status(400).send(error.details[0].message);
       } else {
-        const createdEvent = { EventID, Description,EventName,Location,EventDate};
+        const createdEventAttendees = { EventID,AttendeeID};
   
-        const result = await createEventService(createdEvent);
+        const result = await createEventAttendeeService(createdEventAttendees);
   
         if (result.message) {
           sendServerError(res, result.message)
       } else {
-          sendCreated(res, 'Event created successfully');
+          sendCreated(res, 'Event allocated attendees successfully created successfully');
       }
       }
     } catch (error) {
@@ -31,59 +30,36 @@ export const createEventController = async (req, res) => {
   };
 
 
-  export const updateEventControllers = async (req, res) => {
-    try {
-      const { Description,Location,EventDate } = req.body;
-      const { EventID } = req.params;
-      const { error } = updateEventValidator({Description,Location,EventDate });
-      if (error) {
-        return res.status(400).json({ error: error.details[0].message });
-      }
+  // export const updateEventAttendeesControllers = async (req, res) => {
+  //   try {
+  //     const { Description,Location,EventDate } = req.body;
+  //     const { EventID } = req.params;
+  //     const { error } = updateEventValidator({Description,Location,EventDate });
+  //     if (error) {
+  //       return res.status(400).json({ error: error.details[0].message });
+  //     }
   
-      const updatedEvent = await updateEventService({Description,Location,EventDate, EventID });
-      console.log('Updated one',updatedEvent);
-      if (updatedEvent.error) {
-        return sendServerError(res, updatedEvent.error);
-      }
+  //     const updatedEvent = await updateEventService({Description,Location,EventDate, EventID });
+  //     console.log('Updated one',updatedEvent);
+  //     if (updatedEvent.error) {
+  //       return sendServerError(res, updatedEvent.error);
+  //     }
   
-      return sendCreated(res, 'Event updated successfully');
-    } catch (error) {
-      return sendServerError(res, 'Internal server error');
-    }
-  };
+  //     return sendCreated(res, 'Event updated successfully');
+  //   } catch (error) {
+  //     return sendServerError(res, 'Internal server error');
+  //   }
+  // };
   
-
-  export const updateEventNameControllers = async (req, res) => {
-    try {
-      const { EventName } = req.body;
-      const { EventID } = req.params;
-
-      const { error } = updateEventNameValidator({ EventName });
-      if (error) {
-        return res.status(400).json({ error: error.details[0].message });
-      }
-  
-      const updatedEventName = await updateEventNameService({ EventName, EventID });
-      console.log('Updated one',updatedEventName);
-  
-      if (updatedEventName.error) {
-        return sendServerError(res, updatedEventName.error);
-      }
-  
-      return sendCreated(res, 'Event updated successfully');
-    } catch (error) {
-      return sendServerError(res, 'Internal server error');
-    }
-  };
   
 
-  export const getSingleEventController=async(req,res)=>{
+  export const getSingleEventAttendeesController=async(req,res)=>{
     try {
       const {EventID}=req.params
-      const singleEvent=await getSingleEventServices(EventID)
+      const singleEventAttendees=await getSingleEventAttendeeServices(EventID)
       
-      console.log('single',singleEvent); 
-      res.status(200).json({ event: singleEvent });
+      console.log('single',singleEventAttendees); 
+      res.status(200).json({ eventAttendee: singleEventAttendees });
 
     } catch (error) {
       return error
@@ -92,12 +68,12 @@ export const createEventController = async (req, res) => {
 
 
 
-  export const getAllEventsController = async (req, res) => {
+  export const getAllEventAttendeessController = async (req, res) => {
     try {
-      const results = await getAllEventsService()
-        const events=results.recordset
-        console.log(events);
-      res.status(200).json({ events: events });
+      const results = await getAllEventAttendeesService()
+        const eventsAttendees=results.recordset
+        console.log(eventsAttendees);
+      res.status(200).json({ eventsAttendees: eventsAttendees });
     } catch (error) {
       console.error("Error fetching all events:", error);
       res.status(500).json("Internal server error");
@@ -105,11 +81,11 @@ export const createEventController = async (req, res) => {
   };
   
 
-  export const deleteEventController=async(req,res)=>{
+  export const deleteEventAttendeesController=async(req,res)=>{
     try {
       const {EventID}=req.params
-      const deletedEvent=await deleteEventServices(EventID)
-      console.log('deleted event',deletedEvent); 
+      const deletedEventAttendee=await deleteEventAttendeesServices(EventID)
+      console.log('deleted event',deletedEventAttendee); 
       sendDeleteSuccess(res,"Deleted successfully")
     } catch (error) {
       return error
