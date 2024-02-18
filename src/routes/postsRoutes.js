@@ -11,7 +11,7 @@ postRouter.get('/user/posts/:UserID', getAllUserPostsController )
 
 postRouter.get('/posts/single/:PostID', getSingleSingleController)
 
-postRouter.put('/posts/update/:PostID',updatePostControllers)
+postRouter.put('/posts/update/:UserID/:PostID',updatePostControllers)
 
 postRouter.patch('/posts/patch/:PostID',updateContentControllers)
 

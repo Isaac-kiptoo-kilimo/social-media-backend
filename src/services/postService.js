@@ -32,11 +32,12 @@ export const updatePostService=async(updatePost)=>{
   try {
     const updatedPost=await poolRequest()
     .input('PostID', sql.VarChar,updatePost.PostID)
+    .input('UserID', sql.VarChar,updatePost.UserID)
     .input('Content', sql.VarChar,updatePost.Content)
     .input('PostDate', sql.DateTime,updatePost.PostDate)
     .input('Likes', sql.Int,updatePost.Likes)
     .input('Comments', sql.Int,updatePost.Comments)
-  .query(`UPDATE Post  SET PostID=@PostID, Content = @Content, PostDate = @PostDate,Likes = @Likes , Comments = @Comments  WHERE  PostID = @PostID`)
+  .query(`UPDATE Post  SET PostID=@PostID, Content = @Content, PostDate = @PostDate,Likes = @Likes , Comments = @Comments  WHERE  PostID = @PostID AND UserID =@UserID`)
 console.log(updatePost);
   return updatedPost
   
@@ -52,7 +53,8 @@ export const updateContentService=async(updateContent)=>{
     const updatedContent=await poolRequest()
     .input('Content', sql.VarChar,updateContent.Content)
     .input('PostID', sql.VarChar,updateContent.PostID)
-    .query(`UPDATE Post  SET Content = @Content  WHERE  PostID = @PostID`)
+    .input('UserID', sql.VarChar,updateContent.UserID)
+    .query(`UPDATE Post  SET Content = @Content  WHERE  PostID = @PostID AND UserID=@UserID`)
     console.log("updating content",updateContent);
   return updatedContent
   
@@ -67,7 +69,7 @@ export const getSinglePostServices=async(PostID)=>{
   .input('PostID', sql.VarChar,PostID)
   .query('SELECT * FROM Post WHERE PostID = @PostID ')
   console.log('single post',singlePost.recordset);
-  return singlePost.recordset;
+  return singlePost;
 }
 
 
@@ -106,5 +108,5 @@ export const deletePostServices=async(PostID)=>{
   .input('PostID', sql.VarChar,PostID)
   .query('DELETE FROM Post WHERE PostID = @PostID ')
   console.log('single post',deletedPost.recordset);
-  return deletedPost.recordset;
+  return deletedPost;
 }

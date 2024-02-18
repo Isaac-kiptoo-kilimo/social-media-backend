@@ -1,13 +1,13 @@
 
-### register user
+## register user
 POST http://localhost:5500/api/v1/users/register
 Content-Type: application/json
 
 {
-    "Username": "NGENO" ,
-    "Email": "NGENO@gmail.com" ,
-    "Password": "1234562@K",
-    "TagName": "@rose",
+    "Username": "isaac" ,
+    "Email": "isaackilimok1@gmail.com" ,
+    "Password": "1234562@Ik",
+    "TagName": "@isoo",
     "Location": "Nyeri"
 }
 
@@ -48,12 +48,12 @@ GET http://localhost:5500/api/v1/users/
 
 
 ### Fetching/getting single user
-GET http://localhost:5500/api/v1/users/single/a10d55f1-7053-485f-b9df-f8da39d59080
+GET http://localhost:5500/api/v1/users/single/017e6d02-567c-42de-9feb-b58a9e7fba4a
 
 
 
 ### Deleting a single user
-DELETE  http://localhost:5500/api/v1/users/delete/a10d55f1-7053-485f-b9df-f8da39d59080
+DELETE  http://localhost:5500/api/v1/users/delete/017e6d02-567c-42de-9feb-b58a9e7fba4a
 
 
 
@@ -71,12 +71,12 @@ Content-Type: application/json
 }
 
 ### updating a single post
-PUT http://localhost:5500/api/v1/posts/update/372cb816-52a8-4afb-8b12-37e69bd1ba2a
+PUT http://localhost:5500/api/v1/posts/update/ba4abf58-33e5-4901-b528-bf7bbd55ffd0/54bc56a6-eee9-4c9b-b650-b3abb10691bd
 Content-Type: application/json
 
 {
-     "Content": "This is cool place loving it" ,
-    "Likes": 5,
+    "Content": "We are going to learnt this week react" ,
+    "Likes": 22,
     "Comments": 6
 }
 
@@ -90,8 +90,7 @@ Content-Type: application/json
 }
 
 ### Fetching/getting all posts
-GET http://localhost:5500/api/v1/user/posts/9c402dd7-6623-4689-b4c2-f8529a3d0edc
-
+GET http://localhost:5500/api/v1/user/posts/017e6d02-567c-42de-9feb-b58a9e7fba4a
 
 
 ### Fetching/getting all posts
@@ -100,8 +99,7 @@ GET http://localhost:5500/api/v1/posts/
 
 
 ### Fetching/getting single post
-GET http://localhost:5500/api/v1/posts/single/9c402dd7-6623-4689-b4c2-f8529a3d0edc
-
+GET http://localhost:5500/api/v1/posts/single/54bc56a6-eee9-4c9b-b650-b3abb10691bd
 
 
 ### Deleting a single post

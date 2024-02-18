@@ -150,12 +150,12 @@ export const createNewUserController = async (req, res) => {
     try {
       const {UserID}=req.params
       const existingUser=await getSingleUserServices(UserID)
-      if(existingUser.rowsAffected==0){
-        res.status(400).json({message:"user Not found"})
+      if(existingUser.rowsAffected>0){
+        const deletedUser=await deleteUserServices(UserID)
+        console.log("deleted user",deletedUser);
+        sendDeleteSuccess(res,"Deleted successfull")
     }else{
-      const deletedUser=await deleteUserServices(UserID)
-      console.log('deleteed user',deletedUser); 
-      sendDeleteSuccess(res,"Deleted successfull")
+      res.status(400).json({message:"user Not found"})
     } 
       
     } catch (error) {

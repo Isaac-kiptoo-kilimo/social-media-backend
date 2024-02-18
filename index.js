@@ -1,4 +1,5 @@
 import express from 'express';
+// import express, { Request,Response,json, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import logger from './src/utils/loggers.js'
@@ -26,6 +27,14 @@ app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 rateLimitMiddleware(app);
+
+app.use((error,req,res,next)=>{
+    res.json({
+        message:error
+    })
+
+})
+
 
 app.use('/api/v1',userRouter)
 app.use('/api/v1',postRouter)

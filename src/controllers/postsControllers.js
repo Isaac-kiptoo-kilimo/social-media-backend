@@ -37,6 +37,7 @@ export const createPostController = async (req, res) => {
     try {
       const { Content,Likes,Comments } = req.body;
       const { PostID } = req.params;
+      const { UserID } = req.params;
 
       const PostDate = new Date();    
       const { error } = updatePostValidator({Content });
@@ -44,13 +45,9 @@ export const createPostController = async (req, res) => {
         return res.status(400).json({ error: error.details[0].message });
       }
   
-      const updatedPost = await updatePostService({ Content,PostDate,Likes,Comments, PostID });
+      const updatedPost = await updatePostService({ Content,PostDate,Likes,Comments, PostID,UserID });
       console.log('Updated one',updatedPost);
-      if (updatedPost.error) {
-        return sendServerError(res, updatedPost.error);
-      }
-  
-      return sendCreated(res, 'Post updated successfully');
+   
     } catch (error) {
       return sendServerError(res, 'Internal server error');
     }
@@ -61,20 +58,25 @@ export const createPostController = async (req, res) => {
     try {
       const { Content } = req.body;
       const { PostID } = req.params;
+      const { UserID } = req.params;
 
       const { error } = updateContentValidator({ Content});
       if (error) {
         return res.status(400).json({ error: error.details[0].message });
       }
   
-      const updatedContent = await updateContentService({ Content, PostID });
+      const updatedContent = await updateContentService({ Content, PostID, UserID });
       console.log('Updated one',updatedContent);
   
-      if (updatedContent.error) {
-        return sendServerError(res, updatedContent.error);
+      if (updatedPost.error) {
+        return sendServerError(res, updatedPost.error);
+      }else{
+        if(updatedPost.rowsAffected>0){
+          return sendCreated(res, 'Post updated successfully');
+        }else{
+          res.status(400).json({message:"You are not allowed to edit This post"})
+        }
       }
-  
-      return sendCreated(res, 'post updated successfully');
     } catch (error) {
       return sendServerError(res, 'Internal server error');
     }
@@ -85,9 +87,13 @@ export const createPostController = async (req, res) => {
     try {
       const {PostID}=req.params
       const singlePost=await getSinglePostServices(PostID)
-      
-      console.log('single',singlePost); 
-      res.status(200).json({ post: singlePost });
+      if(singlePost.rowsAffected>0){
+        console.log('single',singlePost.recordset);
+        const onePost= singlePost.recordset
+        res.status(200).json({ post: onePost });
+      }else{
+        res.status(400).json({ message: "There is no post available" });
+      }
 
     } catch (error) {
       return error
@@ -99,22 +105,31 @@ export const createPostController = async (req, res) => {
   export const getAllPostsController = async (req, res) => {
     try {
       const results = await getAllPostsService()
-        const posts=results.recordset[0]
+      if(results.rowsAffected>0){
+        const posts=results.recordset
         console.log(posts);
-      res.status(200).json({ Posts: posts });
+        res.status(200).json({ Posts: posts });
+      }else{
+        res.status(400).json({ message: "There are no posts" });
+      }
     } catch (error) {
       console.error("Error fetching all posts:", error);
       res.status(500).json("Internal server error");
     }
   };
 
+
   export const getAllUserPostsController = async (req, res) => {
     try {
-      const {UserID}=req.params
-      const results = await getAllPostsAndCommentsService(UserID)
+        const {UserID}=req.params
+        const results = await getAllPostsAndCommentsService(UserID)
+        if(results.rowsAffected>0){
         const posts=results.recordset
         console.log(posts);
-      res.status(200).json({ Posts: posts });
+        res.status(200).json({ Posts: posts });
+        }else{
+          res.status(400).json({ messages: "There are no post for the user" });
+        }
     } catch (error) {
       console.error("Error fetching all posts:", error);
       res.status(500).json("Internal server error");
@@ -126,8 +141,13 @@ export const createPostController = async (req, res) => {
     try {
       const {PostID}=req.params
       const deletedPost=await deletePostServices(PostID)
-      console.log('deleted post',deletedPost); 
-      sendDeleteSuccess(res,"Deleted successfully")
+      if(deletedPost.rowsAffected>0){
+        const deletedOnePost=deletedPost.recordset
+        console.log('deleted post',deletedOnePost); 
+        sendDeleteSuccess(res,"Deleted successfully")
+      }else{
+        res.status(400).json({messsage: "post does not exist or already deleted"})
+      }
     } catch (error) {
       return error
     }

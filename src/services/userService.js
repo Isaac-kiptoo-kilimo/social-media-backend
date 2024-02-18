@@ -94,7 +94,7 @@ export const getSingleUserServices=async(UserID)=>{
   const singleUser= await poolRequest()
   .input('UserID', sql.VarChar,UserID)
   .query('SELECT * FROM tbl_user WHERE UserID = @UserID ')
-  console.log('single user',);
+  console.log('single user',singleUser);
   return singleUser
 }
 
@@ -126,6 +126,6 @@ export const deleteUserServices=async(UserID)=>{
   const deletedUser= await poolRequest()
   .input('UserID', sql.VarChar,UserID)
   .query('DELETE FROM tbl_user WHERE UserID = @UserID ')
-  console.log('single user',deletedUser.recordset);
+  console.log(' yeah',deletedUser.recordset);
   return deletedUser.recordset;
 }
