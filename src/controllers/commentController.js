@@ -38,8 +38,8 @@ export const createCommentController = async (req, res) => {
     try {
       const { Content } = req.body;
       const { CommentID } = req.params;
-
-      const CommentDate = GETDATE();    
+      console.log(CommentID);
+      const CommentDate =new Date();    
       const { error } = updateCommentValidator({Content });
       if (error) {
         return res.status(400).json({ error: error.details[0].message });
@@ -47,13 +47,19 @@ export const createCommentController = async (req, res) => {
   
       const updatedComment = await updateCommentService({ Content,CommentDate, CommentID });
       console.log('Updated one',updatedComment);
-      if (updatedComment.error) {
-        return sendServerError(res, updatedComment.error);
+      if(updatedComment.rowsAffected>0){
+        return sendCreated(res, 'Comment updated successfully');
+
+      }else{
+        return sendServerError(res, "Comment not found check the comment id");
+
       }
+   
+     
   
-      return sendCreated(res, 'Comment updated successfully');
     } catch (error) {
-      return sendServerError(res, 'Internal server error');
+     
+      return sendServerError(res, `The error is ${error.message}`);
     }
   };
   
@@ -70,12 +76,14 @@ export const createCommentController = async (req, res) => {
   
       const updatedContent = await updateContentService({ Content, CommentID });
       console.log('Updated one',updatedContent);
-  
-      if (updatedContent.error) {
-        return sendServerError(res, updatedContent.error);
+
+      if(updatedContent.rowsAffected>0){
+        return sendCreated(res, 'comment updated successfully');
+      }else{
+        return sendServerError(res, "Comment not found");
       }
+ 
   
-      return sendCreated(res, 'comment updated successfully');
     } catch (error) {
       return sendServerError(res, 'Internal server error');
     }
@@ -86,9 +94,13 @@ export const createCommentController = async (req, res) => {
     try {
       const {CommentID}=req.params
       const singleComment=await getSingleCommentServices(CommentID)
+      if(singleComment.rowsAffected>0){
+        console.log('single',singleComment); 
+        res.status(200).json({ comment: singleComment });
+      }else{
+        res.status(400).json({ message: "No user found" });
+      }
       
-      console.log('single',singleComment); 
-      res.status(200).json({ comment: singleComment });
 
     } catch (error) {
       return error
@@ -100,9 +112,14 @@ export const createCommentController = async (req, res) => {
   export const getAllCommentsController = async (req, res) => {
     try {
       const results = await getAllCommentsService()
-        const comments=results.recordset
-        console.log(comments);
-      res.status(200).json({ Comments: comments });
+        if(results.rowsAffected>0){
+          const comments=results.recordset
+    
+        res.status(200).json({ Comments: comments });
+        }else{
+          res.status(400).json({ message :"There are no comments" });
+        }      
+
     } catch (error) {
       console.error("Error fetching all comments:", error);
       res.status(500).json("Internal server error");
@@ -114,8 +131,12 @@ export const createCommentController = async (req, res) => {
     try {
       const {CommentID}=req.params
       const deletedComment=await deleteCommentServices(CommentID)
-      console.log('deleted comment',deletedComment); 
-      sendDeleteSuccess(res,"Deleted successfully")
+      if(deletedComment.rowsAffected>0){console.log('deleted comment',deletedComment); 
+      sendDeleteSuccess(res,"Deleted successfully")}
+      else{
+        res.status(504).json("comment not avallabler");
+
+      }
     } catch (error) {
       return error
     }

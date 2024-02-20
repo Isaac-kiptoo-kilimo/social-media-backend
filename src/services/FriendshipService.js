@@ -103,7 +103,7 @@ export const getAllFriendshipsService=async()=>{
 export const deleteFriendshipServices=async(FriendshipID)=>{
   const deletedFriendship= await poolRequest()
   .input('FriendshipID', sql.VarChar,FriendshipID)
-  .query('DELETE FROM FriendshipID WHERE PostID = @FriendshipID ')
+  .query('DELETE FROM Friendship WHERE FriendshipID = @FriendshipID ')
   console.log('single FriendshipID',deletedFriendship.recordset);
   return deletedFriendship.recordset;
 }

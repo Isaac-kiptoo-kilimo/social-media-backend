@@ -1,7 +1,7 @@
 import {v4} from 'uuid'
 import { notAuthorized, sendCreated, sendDeleteSuccess, sendServerError} from "../helpers/helperFunctions.js"
 import { createEventValidator, updateEventNameValidator, updateEventValidator } from '../validators/EventValidator.js';
-import { createEventService, deleteEventServices, getAllEventsService, getSingleEventServices, updateEventNameService, updateEventService } from '../services/eventService.js';
+import { createEventService, deleteEventServices, getAllEventsService, getAllUserEventSServices, getSingleEventServices, updateEventNameService, updateEventService } from '../services/eventService.js';
 
 
 export const createEventController = async (req, res) => {
@@ -90,7 +90,20 @@ export const createEventController = async (req, res) => {
     }
   }
 
+  export const getAllUserEventController=async(req,res)=>{
+    try {
+      const {attendeeID}=req.params
+      const allUserEvents=await getAllUserEventSServices(attendeeID)
+      
+      console.log('single',allUserEvents); 
+      res.status(200).json({ event: allUserEvents });
 
+    } catch (error) {
+      return error
+    }
+  }
+
+  
 
   export const getAllEventsController = async (req, res) => {
     try {

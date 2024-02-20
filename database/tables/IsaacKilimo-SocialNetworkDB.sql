@@ -56,6 +56,7 @@ CREATE TABLE Friendship (
     User1ID VARCHAR(255),
     User2ID VARCHAR(255),
     FriendshipDate DATETIME,
+    isFriend BIT DEFAULT 0,
     FOREIGN KEY (User1ID) REFERENCES tbl_user(UserID),
     FOREIGN KEY (User2ID) REFERENCES tbl_user(UserID)
 );

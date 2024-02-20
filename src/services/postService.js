@@ -16,7 +16,7 @@ export const createPostService=async(post)=>{
     .input('PostDate', sql.DateTime,post.PostDate)
     .input('Likes', sql.Int,post.Likes)
     .input('Comments', sql.Int,post.Comments)
-    .query('INSERT INTO post (PostID,UserID,Content,Likes,Comments,PostDate) VALUES(@PostID,@UserID,@Content,@Likes,@Comments,@PostDate)')
+    .query('INSERT INTO Post (PostID,UserID,Content,Likes,Comments,PostDate) VALUES(@PostID,@UserID,@Content,@Likes,@Comments,@PostDate)')
     console.log('results',result);
     return result;
 

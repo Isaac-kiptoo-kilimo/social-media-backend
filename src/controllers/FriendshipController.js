@@ -120,6 +120,7 @@ export const createFriendshipController = async (req, res) => {
   export const deleteFriendshipController=async(req,res)=>{
     try {
       const {FriendshipID}=req.params
+      console.log(FriendshipID);
       const deletedFriendship=await deleteFriendshipServices(FriendshipID)
       console.log('deleted friendship',deletedFriendship); 
       sendDeleteSuccess(res,"Deleted successfully")

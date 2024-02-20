@@ -33,7 +33,7 @@ export const updateCommentService=async(updateComment)=>{
     .input('Content', sql.VarChar,updateComment.Content)
     .input('CommentDate', sql.DateTime,updateComment.CommentDate)
   .query(`UPDATE Comment  SET CommentID=@CommentID, Content = @Content, CommentDate = @CommentDate  WHERE  CommentID = @CommentID`)
-console.log(updatedComment);
+console.log("new updates",updatedComment.recordset);
   return updatedComment
   
   } catch (error) {

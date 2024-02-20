@@ -21,12 +21,18 @@ const app=express();
 dotenv.config();
 const PORT=process.env.PORT || 5000
 
-app.use(cors())
 
+var corsOptions = {
+    origin: 'http://localhost:5173',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
 // Middlewares should come before the apis|routes
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors(corsOptions))
 rateLimitMiddleware(app);
+
+
 
 app.use((error,req,res,next)=>{
     res.json({

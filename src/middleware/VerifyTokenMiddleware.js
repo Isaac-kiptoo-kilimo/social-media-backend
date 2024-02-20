@@ -1,18 +1,18 @@
-import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
-dotenv.config()
+import jwt from "jsonwebtoken";
+import { notAuthorized } from "../helpers/helperFunctions.js";
 
-// Verifying the token to avoid user generating unverified tokens during login
-export const VerifyTokenMiddleware=async(req,res,next)=>{
-    if(req.headers && req.headers.authorization && req.headers.authorization.split('')[0]==='JWT'){
-        jwt.verify(req.headers.authorization.split('')[1],process.env.SECRET_KEY,(error,decode)=>{
-            if(error){
+export const VerifyTokenMiddleware = (req, res, next) => {
+    if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
+        jwt.verify(req.headers.authorization.split(' ')[1], process.env.SECRET_KEY, (err, decode) =>  {
+            if (err) {
                 return notAuthorized(res, 'You do not have Access');
-            }else{
-                req.user=decode
-                next()
+            } else {
+                req.user = decode;
+                next();
             }
-            
-        })
+        });
+    } else {
+        return notAuthorized(res, 'You do not have Access');
     }
-}
+
+} 

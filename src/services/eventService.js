@@ -72,6 +72,28 @@ export const getSingleEventServices=async(EventID)=>{
 }
 
 
+// all events attended by a specific user
+export const getAllUserEventSServices = async (attendeeID) => {
+  try {
+    const poolRequest = await pool.request();
+
+    const AllUserEvents = await poolRequest
+      .input('attendeeID', sql.VarChar, attendeeID)
+      .query(`
+        SELECT EventAttendee.*, Event.*
+        FROM Event
+        INNER JOIN EventAttendee ON Event.eventID = EventAttendee.eventID
+        WHERE attendeeID = @attendeeID
+      `);
+
+    console.log('User Events:', AllUserEvents.recordset);
+    return AllUserEvents.recordset;
+  } catch (error) {
+    console.error('Error fetching user events:', error.message);
+  }
+};
+
+
 // Fetching all available post in the database
 export const getAllEventsService=async(posts)=>{
     try {

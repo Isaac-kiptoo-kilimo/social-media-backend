@@ -1,19 +1,20 @@
 import {Router} from 'express';
 import { createCommentController, deleteCommentController, getAllCommentsController, getSingleCommentController, updateCommentControllers, updateContentControllers } from '../controllers/commentController.js';
+import {VerifyTokenMiddleware} from '../middleware/VerifyTokenMiddleware.js'
 
 const commentRouter=Router();
 
-commentRouter.post('/comments', createCommentController)
+commentRouter.post('/comments', VerifyTokenMiddleware, createCommentController)
 
-commentRouter.get('/comments', getAllCommentsController)
+commentRouter.get('/comments', VerifyTokenMiddleware, getAllCommentsController)
 
-commentRouter.get('/comments/single/:CommentID', getSingleCommentController)
+commentRouter.get('/comments/single/:CommentID', VerifyTokenMiddleware,getSingleCommentController)
 
-commentRouter.put('/comments/update/:CommentID', updateCommentControllers)
+commentRouter.put('/comments/update/:CommentID',VerifyTokenMiddleware, updateCommentControllers)
 
-commentRouter.patch('/comments/patch/:CommentID', updateContentControllers)
+commentRouter.patch('/comments/patch/:CommentID',VerifyTokenMiddleware, updateContentControllers)
 
-commentRouter.delete('/comments/delete/:CommentID', deleteCommentController)
+commentRouter.delete('/comments/delete/:CommentID',VerifyTokenMiddleware, deleteCommentController)
 
 
 export default commentRouter;
